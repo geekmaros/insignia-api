@@ -6,11 +6,7 @@ import { UsersModule } from './users/users.module';
 import { DatabaseModule } from './database/database.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    UsersModule,
-    DatabaseModule,
-  ],
+  imports: [ConfigModule.forRoot(), UsersModule, DatabaseModule],
   controllers: [AppController],
   providers: [AppService],
 })

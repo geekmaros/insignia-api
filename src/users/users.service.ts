@@ -11,8 +11,10 @@ export class UsersService {
   }
 
   findAll() {
-    return `This action returns all users`;
-    // return this.databaseService.user.findMany();
+    // return `This action returns all users`;
+    return this.databaseService.user.findMany({
+
+    });
   }
 
   findOne(id: number) {
