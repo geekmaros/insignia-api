@@ -52,7 +52,10 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  AuthAccount: 'AuthAccount'
+  AuthAccount: 'AuthAccount',
+  Card: 'Card',
+  CardLink: 'CardLink',
+  CardAppearance: 'CardAppearance'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -97,12 +100,69 @@ export const AuthAccountScalarFieldEnum = {
 export type AuthAccountScalarFieldEnum = (typeof AuthAccountScalarFieldEnum)[keyof typeof AuthAccountScalarFieldEnum]
 
 
+export const CardScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  displayName: 'displayName',
+  title: 'title',
+  slug: 'slug',
+  prefix: 'prefix',
+  suffix: 'suffix',
+  accreditation: 'accreditation',
+  department: 'department',
+  company: 'company',
+  headline: 'headline',
+  isPublic: 'isPublic',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CardScalarFieldEnum = (typeof CardScalarFieldEnum)[keyof typeof CardScalarFieldEnum]
+
+
+export const CardLinkScalarFieldEnum = {
+  id: 'id',
+  cardId: 'cardId',
+  type: 'type',
+  label: 'label',
+  value: 'value',
+  position: 'position',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CardLinkScalarFieldEnum = (typeof CardLinkScalarFieldEnum)[keyof typeof CardLinkScalarFieldEnum]
+
+
+export const CardAppearanceScalarFieldEnum = {
+  id: 'id',
+  cardId: 'cardId',
+  theme: 'theme',
+  logoUrl: 'logoUrl',
+  config: 'config',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CardAppearanceScalarFieldEnum = (typeof CardAppearanceScalarFieldEnum)[keyof typeof CardAppearanceScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull'
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -119,4 +179,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull',
+  AnyNull: 'AnyNull'
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

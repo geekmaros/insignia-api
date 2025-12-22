@@ -47,3 +47,18 @@ export type User = Prisma.UserModel
  * 
  */
 export type AuthAccount = Prisma.AuthAccountModel
+/**
+ * Model Card
+ * 
+ */
+export type Card = Prisma.CardModel
+/**
+ * Model CardLink
+ * 
+ */
+export type CardLink = Prisma.CardLinkModel
+/**
+ * Model CardAppearance
+ * 
+ */
+export type CardAppearance = Prisma.CardAppearanceModel

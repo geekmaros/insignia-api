@@ -233,6 +233,7 @@ export type UserWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   authAccounts?: Prisma.AuthAccountListRelationFilter
+  cards?: Prisma.CardListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -244,6 +245,7 @@ export type UserOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   authAccounts?: Prisma.AuthAccountOrderByRelationAggregateInput
+  cards?: Prisma.CardOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -258,6 +260,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   authAccounts?: Prisma.AuthAccountListRelationFilter
+  cards?: Prisma.CardListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -291,22 +294,24 @@ export type UserScalarWhereWithAggregatesInput = {
 export type UserCreateInput = {
   name: string
   email: string
-  role: $Enums.Role
+  role?: $Enums.Role
   avatarUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   authAccounts?: Prisma.AuthAccountCreateNestedManyWithoutUserInput
+  cards?: Prisma.CardCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
   id?: number
   name: string
   email: string
-  role: $Enums.Role
+  role?: $Enums.Role
   avatarUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   authAccounts?: Prisma.AuthAccountUncheckedCreateNestedManyWithoutUserInput
+  cards?: Prisma.CardUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -317,6 +322,7 @@ export type UserUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   authAccounts?: Prisma.AuthAccountUpdateManyWithoutUserNestedInput
+  cards?: Prisma.CardUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -328,13 +334,14 @@ export type UserUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   authAccounts?: Prisma.AuthAccountUncheckedUpdateManyWithoutUserNestedInput
+  cards?: Prisma.CardUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
   id?: number
   name: string
   email: string
-  role: $Enums.Role
+  role?: $Enums.Role
   avatarUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -440,23 +447,39 @@ export type UserUpdateOneRequiredWithoutAuthAccountsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuthAccountsInput, Prisma.UserUpdateWithoutAuthAccountsInput>, Prisma.UserUncheckedUpdateWithoutAuthAccountsInput>
 }
 
+export type UserCreateNestedOneWithoutCardsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCardsInput, Prisma.UserUncheckedCreateWithoutCardsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCardsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCardsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCardsInput, Prisma.UserUncheckedCreateWithoutCardsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCardsInput
+  upsert?: Prisma.UserUpsertWithoutCardsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCardsInput, Prisma.UserUpdateWithoutCardsInput>, Prisma.UserUncheckedUpdateWithoutCardsInput>
+}
+
 export type UserCreateWithoutAuthAccountsInput = {
   name: string
   email: string
-  role: $Enums.Role
+  role?: $Enums.Role
   avatarUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  cards?: Prisma.CardCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAuthAccountsInput = {
   id?: number
   name: string
   email: string
-  role: $Enums.Role
+  role?: $Enums.Role
   avatarUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  cards?: Prisma.CardUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAuthAccountsInput = {
@@ -482,6 +505,7 @@ export type UserUpdateWithoutAuthAccountsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  cards?: Prisma.CardUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuthAccountsInput = {
@@ -492,6 +516,65 @@ export type UserUncheckedUpdateWithoutAuthAccountsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  cards?: Prisma.CardUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutCardsInput = {
+  name: string
+  email: string
+  role?: $Enums.Role
+  avatarUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authAccounts?: Prisma.AuthAccountCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCardsInput = {
+  id?: number
+  name: string
+  email: string
+  role?: $Enums.Role
+  avatarUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authAccounts?: Prisma.AuthAccountUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCardsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCardsInput, Prisma.UserUncheckedCreateWithoutCardsInput>
+}
+
+export type UserUpsertWithoutCardsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCardsInput, Prisma.UserUncheckedUpdateWithoutCardsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCardsInput, Prisma.UserUncheckedCreateWithoutCardsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCardsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCardsInput, Prisma.UserUncheckedUpdateWithoutCardsInput>
+}
+
+export type UserUpdateWithoutCardsInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authAccounts?: Prisma.AuthAccountUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCardsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authAccounts?: Prisma.AuthAccountUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -501,10 +584,12 @@ export type UserUncheckedUpdateWithoutAuthAccountsInput = {
 
 export type UserCountOutputType = {
   authAccounts: number
+  cards: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   authAccounts?: boolean | UserCountOutputTypeCountAuthAccountsArgs
+  cards?: boolean | UserCountOutputTypeCountCardsArgs
 }
 
 /**
@@ -524,6 +609,13 @@ export type UserCountOutputTypeCountAuthAccountsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.AuthAccountWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCardsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CardWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -534,6 +626,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   updatedAt?: boolean
   authAccounts?: boolean | Prisma.User$authAccountsArgs<ExtArgs>
+  cards?: boolean | Prisma.User$cardsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -570,6 +663,7 @@ export type UserSelectScalar = {
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "role" | "avatarUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   authAccounts?: boolean | Prisma.User$authAccountsArgs<ExtArgs>
+  cards?: boolean | Prisma.User$cardsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -579,6 +673,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     authAccounts: Prisma.$AuthAccountPayload<ExtArgs>[]
+    cards: Prisma.$CardPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -983,6 +1078,7 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   authAccounts<T extends Prisma.User$authAccountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$authAccountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuthAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  cards<T extends Prisma.User$cardsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$cardsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1428,6 +1524,30 @@ export type User$authAccountsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.AuthAccountScalarFieldEnum | Prisma.AuthAccountScalarFieldEnum[]
+}
+
+/**
+ * User.cards
+ */
+export type User$cardsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Card
+   */
+  select?: Prisma.CardSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Card
+   */
+  omit?: Prisma.CardOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CardInclude<ExtArgs> | null
+  where?: Prisma.CardWhereInput
+  orderBy?: Prisma.CardOrderByWithRelationInput | Prisma.CardOrderByWithRelationInput[]
+  cursor?: Prisma.CardWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CardScalarFieldEnum | Prisma.CardScalarFieldEnum[]
 }
 
 /**

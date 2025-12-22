@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.1.0",
   "engineVersion": "ab635e6b9d606fa5c8fb8b1a7f909c3c3c1c98ba",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider     = \"prisma-client\"\n  moduleFormat = \"cjs\"\n  output       = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id        Int      @id @default(autoincrement())\n  name      String\n  email     String   @unique\n  role      Role\n  avatarUrl String? //\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  authAccounts AuthAccount[]\n}\n\nenum Role {\n  USER\n  ADMIN\n  SUPERADMIN\n}\n\nmodel AuthAccount {\n  id                Int          @id @default(autoincrement())\n  userId            Int\n  passwordHash      String?\n  provider          AuthProvider\n  providerAccountId String?\n  expiresAt         DateTime?\n  createdAt         DateTime     @default(now())\n\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@unique([provider, providerAccountId])\n  @@index([userId])\n}\n\nenum AuthProvider {\n  LOCAL\n  GOOGLE\n  GITHUB\n  MAGIC_LINK\n}\n",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider     = \"prisma-client\"\n  moduleFormat = \"cjs\"\n  output       = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id        Int      @id @default(autoincrement())\n  name      String\n  email     String   @unique\n  role      Role     @default(USER)\n  avatarUrl String? //\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  authAccounts AuthAccount[]\n  cards        Card[]\n}\n\nenum Role {\n  USER\n  ADMIN\n  SUPERADMIN\n}\n\nmodel AuthAccount {\n  id                Int          @id @default(autoincrement())\n  userId            Int\n  passwordHash      String?\n  provider          AuthProvider\n  providerAccountId String?\n  expiresAt         DateTime?\n  createdAt         DateTime     @default(now())\n\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@unique([provider, providerAccountId])\n  @@index([userId])\n}\n\nenum AuthProvider {\n  LOCAL\n  GOOGLE\n  GITHUB\n  MAGIC_LINK\n}\n\nmodel Card {\n  id     Int @id @default(autoincrement())\n  userId Int\n\n  displayName String\n  title       String?\n  slug        String  @unique\n\n  prefix        String?\n  suffix        String?\n  accreditation String?\n  department    String?\n  company       String?\n  headline      String?\n\n  isPublic Boolean @default(true)\n  isActive Boolean @default(true)\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  links      CardLink[]\n  appearance CardAppearance?\n\n  @@index([userId])\n}\n\nmodel CardLink {\n  id     Int @id @default(autoincrement())\n  cardId Int\n\n  type     String\n  label    String?\n  value    String\n  position Int\n\n  isActive Boolean @default(true)\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  card Card @relation(fields: [cardId], references: [id], onDelete: Cascade)\n\n  @@index([cardId])\n}\n\nmodel CardAppearance {\n  id     Int @id @default(autoincrement())\n  cardId Int @unique\n\n  theme   String?\n  logoUrl String?\n  config  Json?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  card Card @relation(fields: [cardId], references: [id], onDelete: Cascade)\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"Role\"},{\"name\":\"avatarUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"authAccounts\",\"kind\":\"object\",\"type\":\"AuthAccount\",\"relationName\":\"AuthAccountToUser\"}],\"dbName\":null},\"AuthAccount\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"passwordHash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"provider\",\"kind\":\"enum\",\"type\":\"AuthProvider\"},{\"name\":\"providerAccountId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"AuthAccountToUser\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"Role\"},{\"name\":\"avatarUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"authAccounts\",\"kind\":\"object\",\"type\":\"AuthAccount\",\"relationName\":\"AuthAccountToUser\"},{\"name\":\"cards\",\"kind\":\"object\",\"type\":\"Card\",\"relationName\":\"CardToUser\"}],\"dbName\":null},\"AuthAccount\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"passwordHash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"provider\",\"kind\":\"enum\",\"type\":\"AuthProvider\"},{\"name\":\"providerAccountId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"AuthAccountToUser\"}],\"dbName\":null},\"Card\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"displayName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"prefix\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"suffix\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accreditation\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"department\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"headline\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isPublic\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"CardToUser\"},{\"name\":\"links\",\"kind\":\"object\",\"type\":\"CardLink\",\"relationName\":\"CardToCardLink\"},{\"name\":\"appearance\",\"kind\":\"object\",\"type\":\"CardAppearance\",\"relationName\":\"CardToCardAppearance\"}],\"dbName\":null},\"CardLink\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"cardId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"label\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"value\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"position\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"card\",\"kind\":\"object\",\"type\":\"Card\",\"relationName\":\"CardToCardLink\"}],\"dbName\":null},\"CardAppearance\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"cardId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"theme\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"logoUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"config\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"card\",\"kind\":\"object\",\"type\":\"Card\",\"relationName\":\"CardToCardAppearance\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
   const { Buffer } = await import('node:buffer')
@@ -193,6 +193,36 @@ export interface PrismaClient<
     * ```
     */
   get authAccount(): Prisma.AuthAccountDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.card`: Exposes CRUD operations for the **Card** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Cards
+    * const cards = await prisma.card.findMany()
+    * ```
+    */
+  get card(): Prisma.CardDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.cardLink`: Exposes CRUD operations for the **CardLink** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CardLinks
+    * const cardLinks = await prisma.cardLink.findMany()
+    * ```
+    */
+  get cardLink(): Prisma.CardLinkDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.cardAppearance`: Exposes CRUD operations for the **CardAppearance** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CardAppearances
+    * const cardAppearances = await prisma.cardAppearance.findMany()
+    * ```
+    */
+  get cardAppearance(): Prisma.CardAppearanceDelegate<ExtArgs, { omit: OmitOpts }>;
 }
 
 export function getPrismaClientClass(): PrismaClientConstructor {
