@@ -8,7 +8,15 @@ import { CardsModule } from './cards/cards.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), UsersModule, DatabaseModule, CardsModule, AuthModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    UsersModule,
+    DatabaseModule,
+    CardsModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

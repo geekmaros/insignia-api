@@ -6,19 +6,23 @@ import {
   Patch,
   Param,
   Delete,
+  Req,
+  UseGuards,
+  Logger,
 } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('cards')
 export class CardsController {
   constructor(private readonly cardsService: CardsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createCardDto: CreateCardDto) {
-    const userId = 5; // Temporary hardcoded user ID
-    return this.cardsService.create(userId, createCardDto);
+  create(@Req() req, @Body() createCardDto: CreateCardDto) {
+    return this.cardsService.create(req.user?.userId, createCardDto);
   }
 
   @Get()
