@@ -6,6 +6,7 @@ import {
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { DatabaseService } from '../database/database.service';
+import { use } from 'passport';
 
 @Injectable()
 export class CardsService {
@@ -60,15 +61,15 @@ export class CardsService {
     });
   }
 
-  async findOne(userId: number, id: number) {
+  async findOwnedById(userId: number, cardId: number) {
     const card = await this.databaseService.card.findUnique({
       where: {
-        id,
-        userId,
+        id: cardId,
       },
     });
 
     if (!card) throw new NotFoundException('Card not found');
+    if (card.userId !== userId) throw new ForbiddenException();
     return card;
   }
 

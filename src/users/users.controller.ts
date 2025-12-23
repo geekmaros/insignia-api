@@ -5,12 +5,13 @@ import {
   Body,
   Patch,
   Param,
-  Req,
   Delete,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CurrentUser } from '../auth/current-user.decorator';
+import type { User } from '../types/req.type';
 
 @Controller('users')
 export class UsersController {
@@ -22,8 +23,8 @@ export class UsersController {
   }
 
   @Get()
-  findAll(@Req() req) {
-    return this.usersService.findAll(req.user.userId);
+  findAll(@CurrentUser() user: User) {
+    return this.usersService.findAll(user.userId);
   }
 
   @Get(':id')
