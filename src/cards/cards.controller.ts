@@ -8,7 +8,7 @@ import {
   Delete,
   Req,
   UseGuards,
-  Logger,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { CreateCardDto } from './dto/create-card.dto';
@@ -22,30 +22,38 @@ export class CardsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   create(@Req() req, @Body() createCardDto: CreateCardDto) {
-    return this.cardsService.create(req.user?.userId, createCardDto);
+    return this.cardsService.create(req.user.userId, createCardDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.cardsService.findAll();
+  findAll(@Req() req) {
+    return this.cardsService.findAll(req.user.userId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cardsService.findOne(+id);
+  findOne(@Req() req, @Param('id', ParseIntPipe) id: number) {
+    return this.cardsService.findOne(req.user.userId, id);
   }
   @Get('public/:slug')
   findPublic(@Param('slug') slug: string) {
     return this.cardsService.findPublicBySlug(slug);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCardDto: UpdateCardDto) {
-    return this.cardsService.update(+id, updateCardDto);
+  update(
+    @Req() req,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateCardDto: UpdateCardDto,
+  ) {
+    return this.cardsService.updateOwned(req.user.userId, id, updateCardDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cardsService.remove(+id);
+  remove(@Req() req, @Param('id', ParseIntPipe) id: number) {
+    return this.cardsService.removeOwned(req.user.userId, id);
   }
 }

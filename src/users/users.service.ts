@@ -10,10 +10,10 @@ export class UsersService {
     return 'This action adds a new user';
   }
 
-  findAll() {
+  findAll(userId: number) {
     // return `This action returns all users`;
     return this.databaseService.user.findMany({
-
+      where: { id: userId },
     });
   }
 

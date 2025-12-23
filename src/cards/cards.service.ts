@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { DatabaseService } from '../database/database.service';
@@ -13,18 +17,25 @@ export class CardsService {
         displayName: createCardDto.displayName,
         title: createCardDto.title,
         slug: createCardDto.slug,
-        prefix: createCardDto.prefix,
-        suffix: createCardDto.suffix,
-        accreditation: createCardDto.accreditation,
-        department: createCardDto.department,
         company: createCardDto.company,
-        headline: createCardDto.headline,
+      },
+      select: {
+        id: true,
+        userId: true,
+        displayName: true,
+        title: true,
+        slug: true,
+        company: true,
+        isActive: true,
+        isPublic: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
   }
 
   async findPublicBySlug(slug: string) {
-    return this.databaseService.card.findFirst({
+    const card = await this.databaseService.card.findFirst({
       where: {
         slug,
         isPublic: true,
@@ -38,21 +49,68 @@ export class CardsService {
         appearance: true,
       },
     });
+
+    if (!card) throw new NotFoundException('Card not found');
+    return card;
   }
 
-  findAll() {
-    return `This action returns all cards`;
+  async findAll(userId: number) {
+    return this.databaseService.card.findMany({
+      where: { userId: userId },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} card`;
+  async findOne(userId: number, id: number) {
+    const card = await this.databaseService.card.findUnique({
+      where: {
+        id,
+        userId,
+      },
+    });
+
+    if (!card) throw new NotFoundException('Card not found');
+    return card;
   }
 
-  update(id: number, updateCardDto: UpdateCardDto) {
-    return `This action updates a #${id} card`;
+  async updateOwned(
+    userId: number,
+    cardId: number,
+    updateCardDto: UpdateCardDto,
+  ) {
+    const card = await this.databaseService.card.findUnique({
+      where: { id: cardId },
+    });
+
+    if (!card) throw new NotFoundException('Card not found');
+    if (card.userId !== userId) throw new ForbiddenException('Not your card');
+
+    return this.databaseService.card.update({
+      where: { id: cardId },
+      data: {
+        displayName: updateCardDto.displayName ?? undefined,
+        slug: updateCardDto.slug ?? undefined,
+        title: updateCardDto.title ?? undefined,
+        company: updateCardDto.company ?? undefined,
+        prefix: updateCardDto.prefix ?? undefined,
+        suffix: updateCardDto.suffix ?? undefined,
+        accreditation: updateCardDto.accreditation ?? undefined,
+        department: updateCardDto.department ?? undefined,
+        headline: updateCardDto.headline ?? undefined,
+        isPublic: updateCardDto.isPublic ?? undefined,
+        isActive: updateCardDto.isActive ?? undefined,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} card`;
+  async removeOwned(userId: number, cardId: number) {
+    const card = await this.databaseService.card.findUnique({
+      where: { id: cardId },
+    });
+    if (!card) throw new NotFoundException('Card not found');
+    if (card.userId !== userId) throw new ForbiddenException('Not your card');
+
+    return this.databaseService.card.delete({
+      where: { id: cardId },
+    });
   }
 }

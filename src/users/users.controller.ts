@@ -22,8 +22,8 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAll(@Req() req) {
+    return this.usersService.findAll(req.user.userId);
   }
 
   @Get(':id')
@@ -31,10 +31,10 @@ export class UsersController {
     return this.usersService.findOne(+id);
   }
 
-  @Get('profile/me')
-  getMe(@Req() req) {
-    return req.user;
-  }
+  // @Get('profile/me')
+  // getMe(@Req() req) {
+  //   return req.user.userId;
+  // }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
