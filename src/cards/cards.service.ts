@@ -66,6 +66,13 @@ export class CardsService {
       where: {
         id: cardId,
       },
+      include: {
+        links: {
+          where: { isActive: true },
+          orderBy: { position: 'asc' },
+        },
+        appearance: true,
+      },
     });
 
     if (!card) throw new NotFoundException('Card not found');
