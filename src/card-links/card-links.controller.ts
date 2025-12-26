@@ -39,12 +39,12 @@ export class CardLinksController {
     @Param('linkId', ParseIntPipe) linkId: number,
     @Body() updateCardLinkDto: CreateCardLinkDto,
   ) {
-    // return this.cardLinksService.updateLink(
-    //   user.userId,
-    //   cardId,
-    //   linkId,
-    //   updateCardLinkDto,
-    // );
+    return this.cardLinksService.updateLink(
+      user.userId,
+      cardId,
+      linkId,
+      updateCardLinkDto,
+    );
   }
 
   @Delete(':linkId')
