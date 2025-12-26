@@ -53,11 +53,6 @@ export class CardLinksController {
     @Param('cardId', ParseIntPipe) cardId: number,
     @Param('linkId', ParseIntPipe) linkId: number,
   ) {
-    // return this.cardLinksService.updateLink(
-    //   user.userId,
-    //   cardId,
-    //   linkId,
-    //   updateCardLinkDto,
-    // );
+    return this.cardLinksService.removeLink(user.userId, cardId, linkId);
   }
 }
