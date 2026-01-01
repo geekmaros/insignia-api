@@ -106,7 +106,6 @@ export class CardLinksService {
       where: { cardId },
     });
 
-    const existingIds = new Set(existingLinks.map((l) => l.id));
     const incomingIds = new Set(
       incomingLinks.filter((l) => l.id).map((l) => l.id!),
     );
