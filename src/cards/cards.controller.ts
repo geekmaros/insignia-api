@@ -38,6 +38,15 @@ export class CardsController {
     return this.cardsService.findOwnedById(user.userId, id);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get(':id/dashboard')
+  getDashbaord(
+    @CurrentUser() user: User,
+    @Param('id', ParseIntPipe) cardId: number,
+  ) {
+    return this.cardsService.getDashboard(user.userId, cardId);
+  }
+
   @Get('public/:slug')
   findPublic(@Param('slug') slug: string) {
     return this.cardsService.findPublicBySlug(slug);

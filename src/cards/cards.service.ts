@@ -52,7 +52,51 @@ export class CardsService {
     });
 
     if (!card) throw new NotFoundException('Card not found');
-    return card;
+    // return card;
+    return {
+      id: card.id,
+      displayName: card.displayName,
+      title: card.title,
+      company: card.company,
+      headline: card.headline,
+      slug: card.slug,
+      links: card.links,
+      appearance: card.appearance,
+    };
+  }
+
+  async getDashboard(userId: number, cardId: number) {
+    const card = await this.databaseService.card.findFirst({
+      where: {
+        id: cardId,
+        userId,
+      },
+      include: {
+        links: {
+          orderBy: { position: 'asc' },
+        },
+        appearance: true,
+      },
+    });
+
+    if (!card) {
+      throw new ForbiddenException('Access denied');
+    }
+
+    return {
+      id: card.id,
+      displayName: card.displayName,
+      slug: card.slug,
+      title: card.title,
+      company: card.company,
+      headline: card.headline,
+      isPublic: card.isPublic,
+      isActive: card.isActive,
+      links: card.links,
+      appearance: card.appearance,
+      createdAt: card.createdAt,
+      updatedAt: card.updatedAt,
+    };
   }
 
   async findAll(userId: number) {
