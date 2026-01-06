@@ -7,6 +7,7 @@ import { DatabaseModule } from './database/database.module';
 import { CardsModule } from './cards/cards.module';
 import { AuthModule } from './auth/auth.module';
 import { CardLinksModule } from './card-links/card-links.module';
+import { CardAppearanceModule } from './card-appearance/card-appearance.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CardLinksModule } from './card-links/card-links.module';
     CardsModule,
     AuthModule,
     CardLinksModule,
+    CardAppearanceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
