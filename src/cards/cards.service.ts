@@ -7,6 +7,7 @@ import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { DatabaseService } from '../database/database.service';
 import { use } from 'passport';
+import { publicCardUrl } from '../common/url.utils';
 
 @Injectable()
 export class CardsService {
@@ -96,6 +97,51 @@ export class CardsService {
       appearance: card.appearance,
       createdAt: card.createdAt,
       updatedAt: card.updatedAt,
+    };
+  }
+
+  async getQrPayload(userId: number, cardId: number) {
+    const card = await this.databaseService.card.findFirst({
+      where: {
+        id: cardId,
+        userId,
+        isActive: true,
+      },
+      select: {
+        slug: true,
+      },
+    });
+
+    if (!card) throw new ForbiddenException();
+
+    return {
+      url: publicCardUrl(card.slug),
+    };
+  }
+
+  async getPublicMeta(slug: string) {
+    const card = await this.databaseService.card.findFirst({
+      where: {
+        slug,
+        isPublic: true,
+        isActive: true,
+      },
+      select: {
+        displayName: true,
+        title: true,
+        headline: true,
+        appearance: {
+          select: { logoUrl: true },
+        },
+      },
+    });
+
+    if (!card) return null;
+
+    return {
+      title: `${card.displayName}${card.title ? ' — ' + card.title : ''}`,
+      description: card.headline ?? 'Digital business card',
+      image: card.appearance?.logoUrl ?? null,
     };
   }
 

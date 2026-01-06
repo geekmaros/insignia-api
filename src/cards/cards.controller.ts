@@ -47,9 +47,20 @@ export class CardsController {
     return this.cardsService.getDashboard(user.userId, cardId);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get(':id/qr')
+  getQR(@CurrentUser() user: User, @Param('id', ParseIntPipe) cardId: number) {
+    return this.cardsService.getQrPayload(user.userId, cardId);
+  }
+
   @Get('public/:slug')
   findPublic(@Param('slug') slug: string) {
     return this.cardsService.findPublicBySlug(slug);
+  }
+
+  @Get('public/:slug/meta')
+  getPublicMeta(@Param('slug') slug: string) {
+    return this.cardsService.getPublicMeta(slug);
   }
 
   @UseGuards(JwtAuthGuard)
