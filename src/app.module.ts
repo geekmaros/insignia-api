@@ -13,6 +13,8 @@ import { CardAppearanceModule } from './card-appearance/card-appearance.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath:
+        process.env.NODE_ENV === 'production' ? '.env.production' : '.env',
     }),
     UsersModule,
     DatabaseModule,
