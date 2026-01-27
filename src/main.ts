@@ -6,7 +6,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: ['http://localhost:3000', 'https://insignia-fe-zdqf.vercel.app'],
+    origin: [
+      'http://localhost:3000',
+      'https://insigniacards.vercel.app',
+      'https://insignia-fe-zdqf.vercel.app',
+    ],
     credentials: true,
   });
 
